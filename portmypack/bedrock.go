@@ -1,0 +1,3 @@
+package portmypack
+
+func PortBedrockPack() {}
