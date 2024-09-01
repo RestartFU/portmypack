@@ -83,9 +83,24 @@ func splitCubeMaps(cubemaps image.Texture) ([]image.Texture, error) {
 			}
 		}
 
+		var rotation int
+		switch i {
+		case 0:
+			rotation = 5
+		case 1:
+			rotation = 4
+		case 2:
+			rotation = 2
+		case 3:
+			rotation = 3
+		case 4:
+			rotation = 0
+		case 5:
+			rotation = 1
+		}
 		texture := image.Texture{
 			Image: rgba,
-			Name:  "cubemap_" + strconv.Itoa(i) + ".png",
+			Name:  "cubemap_" + strconv.Itoa(rotation) + ".png",
 		}
 		textures[i] = texture
 	}
