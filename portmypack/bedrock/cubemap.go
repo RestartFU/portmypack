@@ -8,6 +8,8 @@ import (
 	"github.com/restartfu/portmypack/portmypack/image"
 )
 
+var cubemapRotations = []int{5, 4, 2, 3, 0, 1}
+
 func CubemapsFromTexture(cubemaps image.Texture) ([]image.Texture, error) {
 	textures := make([]image.Texture, 6)
 
@@ -22,22 +24,7 @@ func CubemapsFromTexture(cubemaps image.Texture) ([]image.Texture, error) {
 				rgba.Set(x, y, cubemaps.At(x+(i%3)*cubeMapWidth, y+(i/3)*cubeMapHeight))
 			}
 		}
-
-		var rotation int
-		switch i {
-		case 0:
-			rotation = 5
-		case 1:
-			rotation = 4
-		case 2:
-			rotation = 2
-		case 3:
-			rotation = 3
-		case 4:
-			rotation = 0
-		case 5:
-			rotation = 1
-		}
+		rotation := cubemapRotations[i]
 
 		texture := image.Texture{
 			Image: rgba,
