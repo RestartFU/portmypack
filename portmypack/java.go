@@ -88,7 +88,6 @@ func PortJavaEditionPack(pack java.ResourcePack, output string) {
 	newPack.Armors = newArmors
 	newPack.CubeMaps, _ = bedrock.CubemapsFromTexture(pack.Skies[0])
 
-	os.Mkdir("tmp", os.ModePerm)
 	newPack.WriteZip(output)
 	fmt.Println("mcpack file written to:", output)
 }
