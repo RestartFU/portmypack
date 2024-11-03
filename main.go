@@ -20,5 +20,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	portmypack.PortJavaEditionPack(javapack, *output)
+	portmypack.PortJavaEditionPackAndExtract(javapack, *output)
 }

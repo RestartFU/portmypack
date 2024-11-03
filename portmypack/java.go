@@ -34,7 +34,7 @@ var bedrockReplacer = strings.NewReplacer(
 	"netherite_layer_2", "netherite_2",
 )
 
-func PortJavaEditionPack(pack java.ResourcePack, outputDirector string) {
+func PortJavaEditionPackAndExtract(pack java.ResourcePack, outputDirector string) {
 	newPack := bedrock.ResourcePack{}
 	newPack.Name = pack.Name
 
@@ -65,4 +65,30 @@ func PortJavaEditionPack(pack java.ResourcePack, outputDirector string) {
 	output := outputDirector + "/" + tmp
 	fsutil.Unzip(tmpPath, output)
 	fmt.Println("extracted mcpack to:", output)
+}
+
+func PortJavaEditionPack(pack java.ResourcePack, output string) {
+	newPack := bedrock.ResourcePack{}
+	newPack.Name = pack.Name
+
+	pack.PackIcon.Name = "pack_icon.png"
+	newPack.PackIcon = pack.PackIcon
+
+	newPack.Icons = pack.Icons
+	newPack.Particles = pack.Particles
+
+	newPack.Items = pack.Items
+	newPack.Blocks = pack.Blocks
+
+	var newArmors []image.Texture
+	for _, a := range pack.Armors {
+		a.Name = bedrockReplacer.Replace(a.Name)
+		newArmors = append(newArmors, a)
+	}
+	newPack.Armors = newArmors
+	newPack.CubeMaps, _ = bedrock.CubemapsFromTexture(pack.Skies[0])
+
+	os.Mkdir("tmp", os.ModePerm)
+	newPack.WriteZip(output)
+	fmt.Println("mcpack file written to:", output)
 }
