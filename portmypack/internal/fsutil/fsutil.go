@@ -20,13 +20,13 @@ func OpenZip(path string) (*zip.Reader, error) {
 	return zip.NewReader(bytes.NewReader(buf), int64(len(buf)))
 }
 
-func CreateZip(path string) (*zip.Writer, error) {
+func CreateZip(path string) (*os.File, *zip.Writer, error) {
 	file, err := os.Create(path)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return zip.NewWriter(file), nil
+	return nil, zip.NewWriter(file), nil
 }
 
 // FindDirectory finds a directory in a fs.FS.

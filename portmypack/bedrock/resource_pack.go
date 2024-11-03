@@ -79,7 +79,7 @@ func NewResourcePack(filePath string) (ResourcePack, error) {
 }
 
 func (pck ResourcePack) WriteZip(output string) error {
-	w, err := fsutil.CreateZip(output)
+	f, w, err := fsutil.CreateZip(output)
 	if err != nil {
 		return errors.New("error creating new zip file: " + err.Error())
 	}
@@ -97,6 +97,7 @@ func (pck ResourcePack) WriteZip(output string) error {
 	writeTextures(w, pck.Armors, "textures/models/armor")
 
 	w.Close()
+	f.Close()
 	return nil
 }
 
