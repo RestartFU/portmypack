@@ -26,7 +26,7 @@ func CreateZip(path string) (*os.File, *zip.Writer, error) {
 		return nil, nil, err
 	}
 
-	return nil, zip.NewWriter(file), nil
+	return file, zip.NewWriter(file), nil
 }
 
 // FindDirectory finds a directory in a fs.FS.
