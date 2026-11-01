@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -14,7 +15,7 @@ import (
 
 func main() {
 	input := flag.String("i", "", "input Java Edition pack: a .zip file or a folder")
-	output := flag.String("o", ".", "output directory, or the .mcpack file to write with -mcpack")
+	output := flag.String("o", ".", "output directory; with -mcpack, the .mcpack file to write or the directory to write <pack>.mcpack in")
 	mcpack := flag.Bool("mcpack", false, "write a single .mcpack file to -o instead of extracting the pack")
 	minEngine := flag.String("min-engine", versionString(bedrock.DefaultMinEngineVersion),
 		"oldest Bedrock version allowed to load the pack, as major.minor.patch")
@@ -36,7 +37,11 @@ func main() {
 	}
 	opt := portmypack.WithMinEngineVersion(engine)
 	if *mcpack {
-		err = portmypack.PortJavaEditionPack(javapack, *output, opt)
+		dest := *output
+		if info, statErr := os.Stat(dest); statErr == nil && info.IsDir() {
+			dest = filepath.Join(dest, javapack.Name+".mcpack")
+		}
+		err = portmypack.PortJavaEditionPack(javapack, dest, opt)
 	} else {
 		err = portmypack.PortJavaEditionPackAndExtract(javapack, *output, opt)
 	}
